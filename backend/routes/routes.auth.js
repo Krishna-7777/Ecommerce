@@ -1,5 +1,6 @@
 const express = require("express");
 const UserModel = require("../models/user.model");
+const bcrypt = require("bcrypt")
 
 const authRouter = express.Router()
 
@@ -13,6 +14,8 @@ authRouter.post('/register', async (ask, give) => {
             if (checkUser) {
                 give.send({ msg: "You have already registerd, Please Login!" })
             } else {
+                let hpass = await bcrypt.hash(password,3)
+                password = hpass
                 let user = new UserModel({ email, password, name })
                 await user.save()
                 give.send({ msg: "You have Succesfuly Registed, You can now Login." })

@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const { connect } = require("./config/db");
 const { authRouter } = require("./routes/routes.auth");
+const { categoryRouter } = require("./routes/routes.category");
 
 const app = express();
 app.use(cors());
@@ -12,6 +13,8 @@ app.get('/', (ask, give) => {
 })
 
 app.use('/api/auth', authRouter)
+
+app.use('/api/list', categoryRouter)
 
 app.listen(4000, () => {
     try {

@@ -34,6 +34,19 @@ cartRouter.post("/:productId", async (ask, give) => {
     }
 })
 
+cartRouter.put("/:cartItemId", async (ask, give) => {
+    try {
+        let quantity = ask.query.quantity
+        if (!quantity || quantity < 1) {
+            give.send({ "msg": "`quantity` Query is Required with a value more than 0." })
+        } else {
+            await CartModel.findByIdAndUpdate(ask.params.cartItemId, { quantity })
+            give.send({ msg: "Quantity of the product has been updated " })
+        }
+    } catch (error) {
+        give.send({ "msg": "Cart Id passed is invalid !" })
+    }
+})
 
 module.exports = {
     cartRouter

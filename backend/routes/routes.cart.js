@@ -48,6 +48,15 @@ cartRouter.put("/:cartItemId", async (ask, give) => {
     }
 })
 
+cartRouter.delete("/:cartItemId", async (ask, give) => {
+    try {
+        await CartModel.findByIdAndDelete(ask.params.cartItemId)
+        give.send({ msg: "Product has been deleted from the cart" })
+    } catch (error) {
+        give.send({ "msg": "Cart Id passed is invalid !" })
+    }
+})
+
 module.exports = {
     cartRouter
 }

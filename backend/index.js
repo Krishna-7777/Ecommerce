@@ -4,6 +4,7 @@ const { connect } = require("./config/db");
 const { authRouter } = require("./routes/routes.auth");
 const { categoryRouter } = require("./routes/routes.category");
 const { authorize } = require("./middlewares/authorize.mw");
+const { productRouter } = require("./routes/routes.products");
 
 const app = express();
 app.use(cors());
@@ -15,6 +16,7 @@ app.get('/', (ask, give) => {
 
 app.use('/api/auth', authRouter)
 app.use('/api/list', categoryRouter)
+app.use('/api', productRouter)
 
 app.use(authorize)
 

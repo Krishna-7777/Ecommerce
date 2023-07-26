@@ -4,7 +4,7 @@ const schema = new mongoose.Schema({
     title:  String, 
     price:  Number, 
     description:  String, 
-    category: mongoose.Types.ObjectId,
+    category: String,
 });
 
 const ProductModel = mongoose.model('Product', schema);

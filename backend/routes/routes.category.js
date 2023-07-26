@@ -1,7 +1,5 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
 const CategoryModel = require("../models/category.model");
-require("dotenv").config()
 
 const categoryRouter = express.Router()
 

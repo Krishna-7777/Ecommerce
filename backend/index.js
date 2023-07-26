@@ -5,6 +5,7 @@ const { authRouter } = require("./routes/routes.auth");
 const { categoryRouter } = require("./routes/routes.category");
 const { authorize } = require("./middlewares/authorize.mw");
 const { productRouter } = require("./routes/routes.products");
+const { cartRouter } = require("./routes/routes.cart");
 
 const app = express();
 app.use(cors());
@@ -19,6 +20,8 @@ app.use('/api/list', categoryRouter)
 app.use('/api', productRouter)
 
 app.use(authorize)
+
+app.use('/api/cart', cartRouter)
 
 app.listen(4000, () => {
     try {

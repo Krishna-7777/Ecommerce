@@ -6,6 +6,7 @@ const authorize = async (ask, give, next) => {
     if(token){
         let verified = jwt.verify(token,process.env.secret)
         if(verified){
+            ask.user=verified.user
             next()
         }else{
             give.send({msg:"Wrong Access Token Or Expired, Please Login Again !"})

@@ -13,6 +13,15 @@ productRouter.get("/list/products",async(ask, give)=>{
     }
 })
 
+productRouter.get("/detail/product/:productId",async(ask,give)=>{
+    try {
+        let data = await ProductModel.findOne({"_id":ask.params.productId},{category:0})
+        give.send(data)
+    } catch (error) {
+        give.send({ msg: "Please Check the Product id !", error: "Internal Server Error" })
+    }
+})
+
 module.exports = {
     productRouter
 }

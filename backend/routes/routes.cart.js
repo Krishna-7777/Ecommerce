@@ -20,7 +20,7 @@ cartRouter.get("/", async (ask, give) => {
             $project: {
                 quantity: 1,
                 price: "$productDetails.price",
-                title:"productDetails.title",
+                title:"$productDetails.title",
                 product: 1
             }
         }])
@@ -38,7 +38,6 @@ cartRouter.post("/:productId", async (ask, give) => {
         let checkProduct = await ProductModel.find({ _id: product }, { _id: 1 })
         if (checkProduct.length) {
             let checkProductInCart = await CartModel.find({ user, product }, { _id: 1 })
-            console.log(checkProductInCart)
             if (checkProductInCart.length) {
                 give.send({ msg: "Product is already added to your cart." })
             } else {

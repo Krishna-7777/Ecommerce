@@ -1,14 +1,32 @@
 const express = require("express");
 const CartModel = require("../models/cart.model");
 const ProductModel = require("../models/product.model");
+const { default: mongoose } = require("mongoose");
 
 const cartRouter = express.Router()
 
 cartRouter.get("/", async (ask, give) => {
     try {
-        let data = await CartModel.find({ user: ask.user }, { product: 1, quantity: 1 })
+        let data = await CartModel.aggregate([{ $match: { user: new mongoose.Types.ObjectId(ask.user) } }, {
+            $lookup: {
+                from: 'products',
+                localField: 'product',
+                foreignField: '_id',
+                as: 'productDetails'
+            }
+        }, {
+            $unwind: "$productDetails"
+        }, {
+            $project: {
+                quantity: 1,
+                price: "$productDetails.price",
+                title:"productDetails.title",
+                product: 1
+            }
+        }])
         give.send(data)
     } catch (error) {
+        console.log(error)
         give.send({ msg: "Error occured while lisitng your cart !", error: "Internal Server Error" })
     }
 })
@@ -17,12 +35,12 @@ cartRouter.post("/:productId", async (ask, give) => {
     let user = ask.user
     let product = ask.params.productId
     try {
-        let checkProduct = await ProductModel.find({_id:product}, { _id: 1 })
+        let checkProduct = await ProductModel.find({ _id: product }, { _id: 1 })
         if (checkProduct.length) {
             let checkProductInCart = await CartModel.find({ user, product }, { _id: 1 })
             console.log(checkProductInCart)
             if (checkProductInCart.length) {
-                give.send({msg:"Product is already added to your cart."})
+                give.send({ msg: "Product is already added to your cart." })
             } else {
                 let cartItem = new CartModel({
                     user,

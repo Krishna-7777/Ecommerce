@@ -113,21 +113,15 @@
  * @swagger
  * tags:
  *   name: Cart
- *   description: Endpoints for managing the user's shopping cart
+ *   description: Endpoints for managing the user's shopping cart. Protected Routes that can be accessed After authorizing by using the authorize button or by sending a authorization header with value `Bearer <enter token, you can create token by logging in>`.
+ * 
  *
  * /api/cart:
  *   get:
  *     summary: Get the user's shopping cart
  *     tags: [Cart]
- *     parameters:
- *       - in: header
- *         name: Authorization
- *         schema:
- *           type: string
- *         required: true
- *         description: Token received from login (plain token format)
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of cart items
@@ -138,6 +132,8 @@
  *   post:
  *     summary: Add a product to the cart
  *     tags: [Cart]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: productId
@@ -145,12 +141,6 @@
  *           type: string
  *         required: true
  *         description: ID of the product to add to the cart
- *       - in: header
- *         name: Authorization
- *         schema:
- *           type: string
- *         required: true
- *         description: Token received from login (plain token format)
  *     responses:
  *       200:
  *         description: Product added to the cart
@@ -161,6 +151,8 @@
  *   put:
  *     summary: Update the quantity of a cart item
  *     tags: [Cart]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: cartItemId
@@ -175,12 +167,6 @@
  *           minimum: 1
  *         required: true
  *         description: New quantity for the cart item
- *       - in: header
- *         name: Authorization
- *         schema:
- *           type: string
- *         required: true
- *         description: Token received from login (plain token format)
  *     responses:
  *       200:
  *         description: Cart item quantity updated
@@ -192,6 +178,8 @@
  *   delete:
  *     summary: Remove a product from the cart
  *     tags: [Cart]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: cartItemId
@@ -199,12 +187,6 @@
  *           type: string
  *         required: true
  *         description: ID of the cart item to remove
- *       - in: header
- *         name: Authorization
- *         schema:
- *           type: string
- *         required: true
- *         description: Token received from login (plain token format)
  *     responses:
  *       200:
  *         description: Product removed from the cart
@@ -216,21 +198,15 @@
  * @swagger
  * tags:
  *   name: Orders
- *   description: Endpoints for managing user orders
+ *   description: Endpoints for managing user orders. Protected Routes that can be accessed After authorizing by using the authorize button or by sending a authorization header with value `Bearer <enter token, you can create token by logging in>`.
+ * 
  *
  * /api/order:
  *   post:
  *     summary: Place a new order
  *     tags: [Orders]
- *     parameters:
- *       - in: header
- *         name: Authorization
- *         schema:
- *           type: string
- *         required: true
- *         description: Token received from login (plain token format)
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Order placed successfully
@@ -241,15 +217,8 @@
  *   get:
  *     summary: Get a list of user orders
  *     tags: [Orders]
- *     parameters:
- *       - in: header
- *         name: Authorization
- *         schema:
- *           type: string
- *         required: true
- *         description: Token received from login (plain token format)
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of user orders
@@ -260,6 +229,8 @@
  *   get:
  *     summary: Get details of a user's order by order ID
  *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -267,22 +238,13 @@
  *           type: string
  *         required: true
  *         description: ID of the order to retrieve
- *       - in: header
- *         name: Authorization
- *         schema:
- *           type: string
- *         required: true
- *         description: Token received from login (plain token format)
  *     responses:
  *       200:
  *         description: Order details
  *       500:
  *         description: Internal Server Error
  * 
- * securityDefinitions:
- *   BearerAuth:
- *     type: apiKey
- *     name: Authorization
- *     in: header
+ * 
+ * 
  */
 

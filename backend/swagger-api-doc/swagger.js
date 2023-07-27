@@ -5,6 +5,15 @@ const options = {
             title: 'Ecommerce',
             version: '1.0.0',
             description: 'APIs for an Ecommerce App',
+        },
+        components: {
+            securitySchemes: {
+                bearerAuth: {        
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                },
+            },
         }
     },
     apis: [
@@ -12,6 +21,6 @@ const options = {
     ]
 };
 
-module.exports={
+module.exports = {
     options
 }

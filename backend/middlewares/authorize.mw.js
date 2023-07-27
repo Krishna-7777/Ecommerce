@@ -5,6 +5,7 @@ const authorize = async (ask, give, next) => {
     let token = ask.headers.authorization
     if (token) {
         try {
+            token = ((ask.headers.authorization).split(' '))[1]
             let verified = jwt.verify(token, process.env.secret)
             if (verified) {
                 ask.user = verified.user

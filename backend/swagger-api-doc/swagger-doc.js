@@ -109,7 +109,6 @@
  *       500:
  *         description: Internal Server Error
  */
-
 /**
  * @swagger
  * tags:
@@ -120,6 +119,15 @@
  *   get:
  *     summary: Get the user's shopping cart
  *     tags: [Cart]
+ *     parameters:
+ *       - in: header
+ *         name: Authorization
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token received from login (plain token format)
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: List of cart items
@@ -137,6 +145,12 @@
  *           type: string
  *         required: true
  *         description: ID of the product to add to the cart
+ *       - in: header
+ *         name: Authorization
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token received from login (plain token format)
  *     responses:
  *       200:
  *         description: Product added to the cart
@@ -161,6 +175,12 @@
  *           minimum: 1
  *         required: true
  *         description: New quantity for the cart item
+ *       - in: header
+ *         name: Authorization
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token received from login (plain token format)
  *     responses:
  *       200:
  *         description: Cart item quantity updated
@@ -179,6 +199,12 @@
  *           type: string
  *         required: true
  *         description: ID of the cart item to remove
+ *       - in: header
+ *         name: Authorization
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token received from login (plain token format)
  *     responses:
  *       200:
  *         description: Product removed from the cart
@@ -196,6 +222,15 @@
  *   post:
  *     summary: Place a new order
  *     tags: [Orders]
+ *     parameters:
+ *       - in: header
+ *         name: Authorization
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token received from login (plain token format)
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: Order placed successfully
@@ -206,6 +241,15 @@
  *   get:
  *     summary: Get a list of user orders
  *     tags: [Orders]
+ *     parameters:
+ *       - in: header
+ *         name: Authorization
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token received from login (plain token format)
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: List of user orders
@@ -214,7 +258,7 @@
  *
  * /api/order/detail/{id}:
  *   get:
- *     summary: Get details of a user order by ID
+ *     summary: Get details of a user's order by order ID
  *     tags: [Orders]
  *     parameters:
  *       - in: path
@@ -223,9 +267,22 @@
  *           type: string
  *         required: true
  *         description: ID of the order to retrieve
+ *       - in: header
+ *         name: Authorization
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token received from login (plain token format)
  *     responses:
  *       200:
  *         description: Order details
  *       500:
  *         description: Internal Server Error
+ * 
+ * securityDefinitions:
+ *   BearerAuth:
+ *     type: apiKey
+ *     name: Authorization
+ *     in: header
  */
+

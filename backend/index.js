@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
 const { connect } = require("./config/db");
 const { authRouter } = require("./routes/routes.auth");
 const { categoryRouter } = require("./routes/routes.category");
@@ -7,6 +9,9 @@ const { authorize } = require("./middlewares/authorize.mw");
 const { productRouter } = require("./routes/routes.products");
 const { cartRouter } = require("./routes/routes.cart");
 const { orderRouter } = require("./routes/routes.orders");
+const { options } = require("./swagger-api-doc/swagger");
+
+const specs = swaggerJsdoc(options);
 
 const app = express();
 app.use(cors());
@@ -20,6 +25,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/list', categoryRouter)
 app.use('/api', productRouter)
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use(authorize)
 
 app.use('/api/cart', cartRouter)

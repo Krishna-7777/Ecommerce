@@ -14,23 +14,30 @@ cartRouter.get("/", async (ask, give) => {
 })
 
 cartRouter.post("/:productId", async (ask, give) => {
-
+    let user = ask.user
     let product = ask.params.productId
     try {
-        let checkProduct = await ProductModel.findById(product, { _id: 1 })
-        try {
-            let cartItem = new CartModel({
-                user: ask.user,
-                quantity: 1,
-                product
-            })
-            await cartItem.save()
-            give.send({ msg: "Product added to your cart." })
-        } catch (error) {
-            give.send({ msg: "Error occured while adding a product to your cart !", error: "Internal Server Error" })
+        let checkProduct = await ProductModel.find({_id:product}, { _id: 1 })
+        if (checkProduct.length) {
+            let checkProductInCart = await CartModel.find({ user, product }, { _id: 1 })
+            console.log(checkProductInCart)
+            if (checkProductInCart.length) {
+                give.send({msg:"Product is already added to your cart."})
+            } else {
+                let cartItem = new CartModel({
+                    user,
+                    quantity: 1,
+                    product
+                })
+                await cartItem.save()
+                give.send({ msg: "Product added to your cart." })
+            }
+        } else {
+            give.send({ msg: "The given Product ID is invalid" })
         }
     } catch (error) {
-        give.send({ msg: "The given Product ID is invalid" })
+        console.log(error)
+        give.send({ msg: "Error occured while adding a product to your cart !", error: "Internal Server Error" })
     }
 })
 

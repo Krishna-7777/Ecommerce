@@ -46,6 +46,24 @@ orderRouter.post("/", async (ask, give) => {
     }
 })
 
+orderRouter.get('/list', async (ask, give) => {
+    try {
+        let data = await OrderModel.aggregate([
+            { $match: { user: new mongoose.Types.ObjectId(ask.user) } },
+            {
+                $project: {
+                    date:1,
+                    total: 1,
+                    totalQuantity: { $sum: '$items.quantity' }
+                }
+            }
+        ]);
+        give.send(data)
+    } catch (error) {
+        give.send({ msg: "Error occured while listing your orders !", error: "Internal Server Error" })
+    }
+})
+
 module.exports = {
     orderRouter
 }

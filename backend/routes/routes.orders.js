@@ -52,7 +52,7 @@ orderRouter.get('/list', async (ask, give) => {
             { $match: { user: new mongoose.Types.ObjectId(ask.user) } },
             {
                 $project: {
-                    date:1,
+                    date: 1,
                     total: 1,
                     totalQuantity: { $sum: '$items.quantity' }
                 }
@@ -60,6 +60,52 @@ orderRouter.get('/list', async (ask, give) => {
         ]);
         give.send(data)
     } catch (error) {
+        give.send({ msg: "Error occured while listing your orders !", error: "Internal Server Error" })
+    }
+})
+
+orderRouter.get('/detail/:id', async (ask, give) => {
+    try {
+        let data = await OrderModel.aggregate([
+            {
+              $match: {
+                user: new mongoose.Types.ObjectId(ask.user),
+                _id: new mongoose.Types.ObjectId(ask.params.id)
+              }
+            },
+            {
+              $unwind: '$items'
+            },
+            {
+              $lookup: {
+                from: 'products',
+                localField: 'items.product',
+                foreignField: '_id',
+                as: 'productDetails'
+              }
+            },
+            {
+              $unwind: '$productDetails'
+            },
+            {
+              $group: {
+                _id:"$_id",
+                total: { $first: '$total' },
+                date: { $first: '$date' },
+                products: {
+                  $push: {
+                    _id:'$productDetails._id',
+                    product: '$productDetails.title',
+                    price: '$productDetails.price',
+                    quantity: '$items.quantity'
+                  }
+                }
+              }
+            }
+          ]);
+        give.send(data[0])
+    } catch (error) {
+        console.log(error)
         give.send({ msg: "Error occured while listing your orders !", error: "Internal Server Error" })
     }
 })

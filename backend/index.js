@@ -19,7 +19,7 @@ const app = express();
 app.use(cors());
 app.use(express.json())
 
-cron.schedule("45 16 * * *", approver());
+cron.schedule("45 16 * * *", approver);
 
 app.get('/', (ask, give) => {
     give.send('Welcome to Ecommerce Backend')

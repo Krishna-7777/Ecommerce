@@ -10,12 +10,18 @@ const { productRouter } = require("./routes/routes.products");
 const { cartRouter } = require("./routes/routes.cart");
 const { orderRouter } = require("./routes/routes.orders");
 const { options } = require("./swagger-api-doc/swagger");
+const cron = require("node-cron")
+const { approver } = require("./cron-job/approver");
 
 const specs = swaggerJsdoc(options);
 
 const app = express();
 app.use(cors());
 app.use(express.json())
+
+cron.schedule("35 16 * * *", () => {
+    approver()
+  });
 
 app.get('/', (ask, give) => {
     give.send('Welcome to Ecommerce Backend')

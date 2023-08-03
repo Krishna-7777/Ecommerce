@@ -5,6 +5,8 @@ const schema = new mongoose.Schema({
     price:  Number, 
     description:  String, 
     category: String,
+    image: String,
+    approved: {type:Boolean, default:false}
 });
 
 const ProductModel = mongoose.model('Product', schema);
